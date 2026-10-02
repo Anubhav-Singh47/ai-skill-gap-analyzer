@@ -52,3 +52,4 @@ uvicorn==0.54.0
 watchdog==6.0.0
 websockets==16.1.1
 Werkzeug==3.1.9
+reportlab==4.4.10
