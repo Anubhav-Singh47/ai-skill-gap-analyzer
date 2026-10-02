@@ -18,7 +18,7 @@ from reportlab.platypus import (PageBreak, Paragraph, SimpleDocTemplate,
 # CONFIG
 # ============================================================
 
-BACKEND_URL = "http://127.0.0.1:5000"
+BACKEND_URL = "https://ai-skill-gap-analyzer-tn48.onrender.com"
 
 st.set_page_config(
     page_title="AI Skill-Gap Analyzer",
