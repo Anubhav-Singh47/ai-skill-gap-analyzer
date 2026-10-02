@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, jsonify, request
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -1153,7 +1153,7 @@ if __name__ == "__main__":
     print("")
 
     app.run(
-        host="127.0.0.1",
-        port=5000,
-        debug=True
-    )
+    host="0.0.0.0",
+    port=5000,
+    debug=True
+)
