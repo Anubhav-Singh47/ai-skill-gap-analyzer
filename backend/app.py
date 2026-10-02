@@ -918,48 +918,48 @@ def job_match():
 
         data = request.get_json(silent=True) or {}
 
-        resume_text = data.get(
-            "resume_text",
-            ""
-        )
-
-        job_description = data.get(
-            "job_description",
-            ""
-        )
+        resume_text = data.get("resume_text", "")
+        job_description = data.get("job_description", "")
 
         if not resume_text:
-
             return jsonify({
                 "status": "error",
                 "error": "resume_text is required"
             }), 400
 
         if not job_description:
-
             return jsonify({
                 "status": "error",
                 "error": "job_description is required"
             }), 400
 
-        resume_skills = extract_skills_from_text(
-            resume_text
-        )
+        # Extract skills
+        resume_skills = extract_skills_from_text(resume_text)
+        job_skills = extract_skills_from_text(job_description)
 
-        job_skills = extract_skills_from_text(
-            job_description
-        )
+        # Normalize skills for accurate comparison
+        resume_skill_map = {
+            skill.strip().lower(): skill
+            for skill in resume_skills
+        }
 
-        matched_skills = [
-            skill
+        job_skill_map = {
+            skill.strip().lower(): skill
             for skill in job_skills
-            if skill in resume_skills
+        }
+
+        # Matched skills
+        matched_skills = [
+            job_skill_map[key]
+            for key in job_skill_map
+            if key in resume_skill_map
         ]
 
+        # Missing skills
         missing_skills = [
-            skill
-            for skill in job_skills
-            if skill not in resume_skills
+            job_skill_map[key]
+            for key in job_skill_map
+            if key not in resume_skill_map
         ]
 
         total_job_skills = len(job_skills)
@@ -971,12 +971,10 @@ def job_match():
         else:
 
             match_percentage = round(
-                (
-                    len(matched_skills)
-                    / total_job_skills
-                ) * 100
+                (len(matched_skills) / total_job_skills) * 100
             )
 
+        # Match level
         if match_percentage >= 80:
             match_level = "High Match"
 
